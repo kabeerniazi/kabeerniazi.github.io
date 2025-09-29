@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playground </title>
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #1e1e1e;
+      color: #d4d4d4;
+    }
+
+    header {
+      background: #2d2d30;
+      color: #ffffff;
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #3e3e42;
+    }
+
+    .workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* Side panel containing logs and notes */
+    .side-panel {
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      border-right: 2px solid #3e3e42;
+      height: 100%; /* Ensure full height */
+      background: #252526;
+    }
+
+    /* Log panel - fixed height with scroll */
+    .log-panel {
+      height: 300px; /* Fixed height */
+      background: #2d2d30;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #3e3e42;
+    }
+
+    .log-header {
+      padding: 10px;
+      border-bottom: 1px solid #3e3e42;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #383838;
+      flex-shrink: 0; /* Prevent header from shrinking */
+      color: #cccccc;
+    }
+
+    .log-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .log-item {
+      padding: 6px 8px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      background: #3c3c3c;
+      cursor: pointer;
+      border: 1px solid #404040;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #cccccc;
+    }
+
+    .log-item.active {
+      background: #0e639c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .log-item-name {
+      flex: 1;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    .log-item-controls {
+      display: flex;
+      gap: 2px;
+    }
+
+    .rename-btn {
+      background: #16825d;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .rename-btn:hover {
+      background: #1a9463;
+    }
+
+    .delete-btn {
+      background: #f14c4c;
+      color: white;
+      border: none;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .delete-btn:hover {
+      background: #f66;
+    }
+
+    /* Notes panel - fixed height with scroll */
+    .notes-panel {
+      height: calc(100% - 300px); /* Remaining height after log panel */
+      background: #2d2d30;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+    }
+
+    .notes-header {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-shrink: 0; /* Prevent header from shrinking */
+    }
+
+    .notes-panel textarea {
+      flex: 1;
+      resize: none;
+      font-family: monospace;
+      padding: 8px;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      overflow-y: auto; /* Add scroll for notes */
+      background: #1e1e1e;
+      color: #d4d4d4;
+    }
+
+    /* Main content area */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Editor panel with tabs */
+    .editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs {
+      display: flex;
+      background: #383838;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #2d2d30;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      margin-right: 1px;
+      color: #cccccc;
+    }
+
+    .tab-button.active {
+      background: #0e639c;
+      color: white;
+    }
+
+    .tab-button:hover {
+      background: #094771;
+      color: white;
+    }
+
+    .tab-content {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 10px;
+      border: 1px solid #3e3e42;
+      border-radius: 0 0 4px 4px;
+      background: #1e1e1e;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    textarea {
+      flex: 1;
+      resize: none;
+      font-family: monospace;
+      padding: 8px;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+    }
+
+    /* Preview panel */
+    .preview {
+      flex: 1;
+      border: 1px solid #3e3e42;
+      border-radius: 4px;
+      background: #1e1e1e;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+
+    button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      background: #0e639c;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1177bb;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/monokai.min.css">
+</head>
+<body>
+  <header>
+    <h2>HTML & CSS Playground </h2>
+  </header>
+
+  <div class="workspace">
+    <!-- Side panel with logs and notes -->
+    <div class="side-panel">
+      <!-- Log panel - top half -->
+      <div class="log-panel">
+        <div class="log-header">
+          <span>Sessions</span>
+          <button onclick="newSession()">＋</button>
+        </div>
+        <div id="log-list" class="log-list"></div>
+      </div>
+
+      <!-- Notes panel - bottom half -->
+      <div class="notes-panel">
+        <div class="notes-header">
+          <button onclick="addEntry()">🕒 New Entry</button>
+          <button onclick="saveSession()">💾 Save</button>
+        </div>
+        <textarea id="notes" placeholder="Write your lab notes here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Main content area -->
+    <main>
+      <!-- Editor panel with tabs -->
+      <div class="editor">
+        <div class="tabs">
+          <button class="tab-button active" onclick="switchTab('html')" id="html-tab">HTML</button>
+          <button class="tab-button" onclick="switchTab('css')" id="css-tab">CSS</button>
+        </div>
+        
+        <div class="tab-content active" id="html-content">
+          <textarea id="html-code" placeholder="Write HTML here..."></textarea>
+        </div>
+        
+        <div class="tab-content" id="css-content">
+          <textarea id="css-code" placeholder="Write CSS here..."></textarea>
+        </div>
+      </div>
+
+      <!-- Preview panel -->
+      <div class="preview">
+        <iframe id="output"></iframe>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closetag.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
+  
+  <script>
+    let sessions = [];
+    let currentSessionId = null;
+    let currentTab = 'html';
+    let htmlEditor, cssEditor;
+
+    // Initialize CodeMirror editors first
+    document.addEventListener('DOMContentLoaded', function() {
+      htmlEditor = CodeMirror.fromTextArea(document.getElementById("html-code"), {
+        mode: "htmlmixed",
+        lineNumbers: true,
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentWithTabs: false,
+        theme: "monokai"
+      });
+
+      cssEditor = CodeMirror.fromTextArea(document.getElementById("css-code"), {
+        mode: "css",
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        tabSize: 2,
+        indentWithTabs: false,
+        theme: "monokai"
+      });
+
+      // Live update function
+      function updateOutput() {
+        const html = htmlEditor.getValue();
+        const css = "<style>" + cssEditor.getValue() + "</style>";
+        const output = document.getElementById('output');
+        output.srcdoc = html + css;
+      }
+
+      htmlEditor.on("change", updateOutput);
+      cssEditor.on("change", updateOutput);
+
+      // Load sessions after CodeMirror is ready
+      loadAll();
+    });
+
+    document.getElementById("notes").addEventListener("keydown", function(e) {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = this.value.substring(0, start) + "  " + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = start + 2;
+      }
+    });
+    
+    function runCode() {
+      const html = htmlEditor.getValue();
+      const css = "<style>" + cssEditor.getValue() + "</style>";
+      const output = document.getElementById('output');
+      output.srcdoc = html + css;
+    }
+
+    function switchTab(tab) {
+      // Save current content before switching
+      if (currentSessionId) {
+        const session = sessions.find(s => s.id === currentSessionId);
+        if (session) {
+          if (currentTab === 'html') {
+            session.html = htmlEditor.getValue();
+          } else if (currentTab === 'css') {
+            session.css = cssEditor.getValue();
+          }
+        }
+      }
+
+      // Update current tab
+      currentTab = tab;
+
+      // Update tab buttons
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tab + '-tab').classList.add('active');
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(tab + '-content').classList.add('active');
+
+      // Load content for new tab
+      if (currentSessionId) {
+        const session = sessions.find(s => s.id === currentSessionId);
+        if (session) {
+          if (tab === 'html') {
+            htmlEditor.setValue(session.html || '');
+          } else if (tab === 'css') {
+            cssEditor.setValue(session.css || '');
+          }
+        }
+      }
+    }
+
+    function addEntry() {
+      const now = new Date();
+      const timestamp = "## [" + now.toLocaleDateString() + " | " + now.toLocaleTimeString() + "]\n";
+      const notes = document.getElementById('notes');
+      notes.value += "\n" + timestamp;
+      notes.focus();
+    }
+
+    function newSession() {
+      const id = Date.now();
+      const session = {
+        id,
+        name: "Entry " + (sessions.length + 1),
+        html: "",
+        css: "",
+        notes: ""
+      };
+      sessions.push(session);
+      currentSessionId = id;
+      renderLog();
+      loadSession(id);
+      saveAll();
+    }
+
+    function saveSession() {
+      if (!currentSessionId) return;
+      const session = sessions.find(s => s.id === currentSessionId);
+      if (!session) return;
+      session.html = htmlEditor.getValue();
+      session.css = cssEditor.getValue();
+      session.notes = document.getElementById('notes').value;
+      saveAll();
+    }
+
+    function loadSession(id) {
+      const session = sessions.find(s => s.id === id);
+      if (!session) return;
+      currentSessionId = id;
+      htmlEditor.setValue(session.html || '');
+      cssEditor.setValue(session.css || '');
+      document.getElementById('notes').value = session.notes || '';
+      
+      // Update current tab display
+      if (currentTab === 'html') {
+        htmlEditor.setValue(session.html || '');
+      } else if (currentTab === 'css') {
+        cssEditor.setValue(session.css || '');
+      }
+      
+      runCode();
+      renderLog();
+    }
+
+    function deleteSession(id) {
+      if (confirm("Are you sure you want to delete this session?")) {
+        sessions = sessions.filter(s => s.id !== id);
+        
+        // If we deleted the current session, clear everything or switch to another
+        if (currentSessionId === id) {
+          if (sessions.length > 0) {
+            currentSessionId = sessions[0].id;
+            loadSession(currentSessionId);
+          } else {
+            // No sessions left - clear everything
+            currentSessionId = null;
+            htmlEditor.setValue('');
+            cssEditor.setValue('');
+            document.getElementById('notes').value = '';
+            document.getElementById('output').srcdoc = '';
+          }
+        }
+        
+        saveAll();
+        renderLog();
+      }
+    }
+
+    function renameSession(id) {
+      const session = sessions.find(s => s.id === id);
+      if (!session) return;
+      
+      const newName = prompt("Enter new name for this session:", session.name);
+      if (newName && newName.trim()) {
+        session.name = newName.trim();
+        saveAll();
+        renderLog();
+      }
+    }
+
+    function renderLog() {
+      const list = document.getElementById('log-list');
+      list.innerHTML = "";
+      
+      if (sessions.length === 0) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.textContent = "No sessions. Click + to create one.";
+        emptyDiv.style.textAlign = "center";
+        emptyDiv.style.color = "#666";
+        emptyDiv.style.fontStyle = "italic";
+        emptyDiv.style.padding = "20px";
+        list.appendChild(emptyDiv);
+        return;
+      }
+      
+      sessions.forEach(s => {
+        const div = document.createElement('div');
+        div.className = "log-item" + (s.id === currentSessionId ? " active" : "");
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = s.name;
+        nameSpan.className = "log-item-name";
+        nameSpan.onclick = () => loadSession(s.id);
+        
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = "log-item-controls";
+        
+        const renameBtn = document.createElement('button');
+        renameBtn.textContent = "✏";
+        renameBtn.className = "rename-btn";
+        renameBtn.title = "Rename session";
+        renameBtn.onclick = (e) => {
+          e.stopPropagation();
+          renameSession(s.id);
+        };
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "×";
+        deleteBtn.className = "delete-btn";
+        deleteBtn.title = "Delete session";
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation();
+          deleteSession(s.id);
+        };
+        
+        controlsDiv.appendChild(renameBtn);
+        controlsDiv.appendChild(deleteBtn);
+        
+        div.appendChild(nameSpan);
+        div.appendChild(controlsDiv);
+        list.appendChild(div);
+      });
+    }
+
+    function saveAll() {
+      localStorage.setItem('sessions', JSON.stringify(sessions));
+      localStorage.setItem('currentSessionId', currentSessionId);
+    }
+
+    function loadAll() {
+      const data = localStorage.getItem('sessions');
+      if (data) {
+        sessions = JSON.parse(data);
+        currentSessionId = JSON.parse(localStorage.getItem('currentSessionId'));
+        renderLog();
+        if (currentSessionId) loadSession(currentSessionId);
+      } else {
+        newSession(); // start with first session
+      }
+    }
+
+    document.querySelectorAll("textarea").forEach(area => {
+      area.addEventListener("keydown", function(e) {
+        if (e.key === "Tab") {
+          e.preventDefault(); // stop jumping to next field
+          const start = this.selectionStart;
+          const end = this.selectionEnd;
+
+          // insert 2 spaces (or "\t" for real tab character)
+          this.value = this.value.substring(0, start) + "  " + this.value.substring(end);
+
+          // move cursor after the inserted spaces
+          this.selectionStart = this.selectionEnd = start + 2;
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
