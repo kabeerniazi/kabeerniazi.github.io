@@ -1,0 +1,183 @@
+/* lab04/styles.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font stack */
+    color: #333;
+    line-height: 1.6;
+    background-color: #f4f4f9; /* Added background color to body */
+}
+
+/* Centering the main content area */
+main {
+    width: 90%; /* Box Dimension: Set a relative width */
+    max-width: 800px; /* Box Dimension: Set a maximum width */
+    margin: 20px auto; /* Box Model: Center the main content */
+    padding: 20px; /* Box Model: Internal padding */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Box Shadow */
+}
+
+/* ========================= */
+/* 2. Header & Typography */
+/* ========================= */
+header {
+    background-color: #0056b3; 
+    color: white;
+    padding: 20px 0;
+    text-align: center; /* Text Styling */
+    margin-bottom: 30px; /* Box Model: Margin below header */
+    border-radius: 8px 8px 0 0;
+}
+
+h1, h2 {
+    color: #0056b3;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px; /* Box Model: Padding below headings */
+}
+
+header h1 { /* Descendant Selector */
+    color: white;
+    font-size: 2.5em; /* Text Styling: Larger size */
+}
+
+#my-name {
+    /* Styles for the name */
+    border: 2px solid #FFD700; /* Border: Updated border color */
+    display: inline-block;
+    padding: 5px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+/* Styles moved from inline to CSS (High Specificity ID Selector) */
+#lorem-ipsum-bio {
+    color: rgb(150, 0, 0); 
+    font-style: italic; 
+    background-color: #e3ebcc;
+    padding: 10px;
+    border: 1px dashed #a0a0a0;
+}
+
+/* ========================= */
+/* 3. Images & Links */
+/* ========================= */
+img {
+    /* Combined and refined existing image styles */
+    border-radius: 50%; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 3px solid #FFD700; /* Added a visible border */
+    display: block;
+    margin: 0 auto 20px; /* Centering the image */
+}
+
+img:hover { /* Pseudo-Class for interactivity */
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    /* Removed redundant border/shadow here */
+    border: none;
+    box-shadow: none;
+    margin: 0 5px;
+}
+
+a {
+    color: #4CAF50; /* Link color */
+    font-weight: bold;
+    text-decoration: none; /* Remove default underline */
+}
+
+a[href^="mailto"] { /* Attribute Selector: Target email links */
+    color: #FF5722;
+    text-decoration: underline;
+}
+
+a:hover { /* Pseudo-Class */
+    color: #81C784; 
+    text-decoration: underline;
+}
+
+/* ========================= */
+/* 4. Lists & Pseudo-Elements */
+/* ========================= */
+ol, ul {
+    list-style: none; /* Remove default list markers */
+    padding: 0; /* Box Model: Reset padding */
+}
+
+ol > li, ul > li { /* Child Selector */
+    /* Refined existing styles */
+    padding: 8px 15px 8px 30px; /* Box Model: Refined padding */
+    margin-bottom: 5px; /* Box Model: Vertical margin */
+    border-left: 4px solid #06c52f;
+    color: #2200e4;
+    position: relative; /* Setup for pseudo-elements */
+}
+
+/* Pseudo-Element to add a custom marker to UNORDERED lists */
+ul > li:before {
+    content: "★"; /* Pseudo-Element: Custom content */
+    color: #FFD700;
+    font-size: 1.2em;
+    position: absolute;
+    left: 10px;
+}
+
+ul > li:hover { /* Pseudo-Class for lists */
+    background-color: #f0f0f0 !important; /* Demonstrate !important override on hover */
+    cursor: pointer;
+}
+
+
+/* Apply color classes to list items (used existing colors for simplicity) */
+.red, .orange, .yellow, .green, .blue, .indigo, .violet {
+    /* Reset existing background colors for clarity before applying new class styles */
+    background-color: transparent; 
+}
+.red { background-color: #ffcccc; }
+.orange { background-color: #ffe6cc; }
+.yellow { background-color: #ffffcc; }
+.green { background-color: #e6ffcc; }
+.blue { background-color: #cceeff; }
+.indigo { background-color: #e6ccff; }
+.violet { background-color: #ffcce6; }
+
+/* ========================= */
+/* 5. Footer & Table Styles */
+/* ========================= */
+footer {
+    text-align: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    margin-top: 20px;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer table {
+    margin: 15px auto;
+    border-collapse: collapse; /* Table Styling: Collapse borders */
+    width: 90%;
+    max-width: 400px;
+    color: #333;
+    background-color: #fff;
+    font-size: 0.9em;
+}
+
+footer th, footer td {
+    border: 1px solid #ccc; /* Table Styling */
+    padding: 8px;
+}
+
+footer th {
+    background-color: #e0e0e0;
+}
