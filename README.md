@@ -1,6 +1,6 @@
 this is a repo for the course cs-234
 
-# 📘 Comprehensive Guide to Web Development Fundamentals
+#  Comprehensive Guide to Web Development Fundamentals
 
 ---
 
@@ -265,7 +265,7 @@ Here is how you might use them in a sentence:
 
 The **Document Object Model (DOM)** is the browser's internal, hierarchical software representation of the HTML document. Every tag becomes a **node** in a tree, establishing parent-child-sibling relationships. The DOM is not just an abstract concept; it is the concrete object that CSS selectors target and that JavaScript manipulates to create dynamic effects.
 
-## 🎨 Chapter 4: Introduction to CSS (Presentation and Styling)
+##  Chapter 4: Introduction to CSS (Presentation and Styling)
 
 CSS (Cascading Style Sheets) is the language used to define the visual presentation of HTML documents. The central architectural principle of CSS is **separation of concerns**: all presentation logic (colors, fonts, layout, spacing) must be separated from the semantic structure (HTML).
 
