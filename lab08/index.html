@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>LAb task 8</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .image-card {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        img {
+            width: 100%;
+            height: auto; 
+            display: block;
+            border-radius: 4px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    
+        .extraspace {
+            height: 300vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #e0e0e0;
+            margin-bottom: 40px;
+            color: #555;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Website Pictures</h1>
+    </header>
+
+    <main>
+        <p>Scroll down to see the all images in lazy way...</p>
+        <div class="extraspace">
+            <h2>Scroll Down (Keep going...) &darr;</h2>
+        </div>
+
+        <div class="gallery">
+     
+            <div class="image-card">
+                <img src="pictures/a.jpeg" alt="Picture A" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/b.jpeg" alt="Picture B" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/c.jpeg" alt="Picture C" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/d.jpeg" alt="Picture D" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/e.jpeg" alt="Picture E" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/f.jpeg" alt="Picture F" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/g.jpeg" alt="Picture G" loading="lazy">
+            </div>
+
+            <div class="image-card">
+                <img src="pictures/h.jpeg" alt="Picture H" loading="lazy">
+            </div>
+        </div>
+        
+        <div class="extraspace" style="margin-top: 40px; height: 200px;">
+            <p>End of Gallery</p>
+        </div>
+    </main>
+
+</body>
+</html>
